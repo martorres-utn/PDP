@@ -36,3 +36,9 @@ cuadruple numero = (doble.doble) numero
 
 esMayorA :: Integer -> Bool
 esMayorA numero = (doble.siguiente.(+) 2) numero > 10
+
+lambdaTriple numero = (\x -> x * 3) numero
+
+lambdaSiguiente numero =  (\x -> x + 1) numero
+
+lambdaSumarDos n1 n2 = (\x y -> x + y) n1 n2

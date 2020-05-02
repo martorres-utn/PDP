@@ -62,4 +62,6 @@ No hay que generar funciones, sino aprovechar find’ y desde la consola resuelv
 data Politico = Politico {proyectosPresentados :: [String], sueldo :: Float, edad :: Int } deriving Show 
 politicos = [ Politico ["ser libres", "libre estacionamiento coches politicos", "ley no fumar", "ley 19182"] 20000 81, Politico ["tratar de reconquistar luchas sociales"] 10000 63, Politico ["tolerancia 100 para delitos"] 15500 49 ]
 
--- a) find' (< 50.edad) politicos
+-- a) *Main> find' ((<50) . edad) politicos
+-- b) *Main> find' ((>3) . length . proyectosPresentados) politicos
+-- c) *Main> find' ((any ((>3) . length . words)) . proyectosPresentados) politicos

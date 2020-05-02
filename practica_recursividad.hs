@@ -47,3 +47,16 @@ aprobo alumno = ((all (>5)). notas) alumno
 
 aprobaron :: [Persona] -> [Nombre]
 aprobaron alumnos = ((map nombre) . (filter aprobo)) alumnos
+
+-- 5. Definir la función productos que dado una lista de nombres  de productos y una lista de precios, devuelve una lista de tuplas.
+-- Main> productos [“melon”, “zapallo”, “palta”] [ 15, 10, 12, 7]
+-- [(“melon”, 15), (“zapallo”, 10), (“palta”, 12)]
+-- Definirla usando zip y usando zipWith
+
+-- definicion con zip
+productos :: [String] -> [Int] -> [(String,Int)]
+productos nombres precios = zip nombres precios
+
+--definicion con zipWith
+productos' :: [String] -> [Int] -> [(String,Int)]
+productos' nombres precios = zipWith (\n p -> (n, p)) nombres precios

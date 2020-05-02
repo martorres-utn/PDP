@@ -60,3 +60,32 @@ productos nombres precios = zip nombres precios
 --definicion con zipWith
 productos' :: [String] -> [Int] -> [(String,Int)]
 productos' nombres precios = zipWith (\n p -> (n, p)) nombres precios
+
+-- 6. Dado una lista de flores donde cada una está representada de la siguiente forma:
+data Flor = Flor { nombreFlor :: String, aplicacion:: String, cantidadDeDemanda:: Int } deriving Show
+ 
+rosa = Flor "rosa" "decorativo" 120
+jazmin =  Flor "jazmin" "aromatizante" 100
+violeta=  Flor "violeta" "infusión" 110
+orquidea =  Flor "orquidea" "decorativo" 150
+
+flores = [orquidea, rosa, violeta, jazmin]
+
+-- 6.a) Definir maximoSegun que permite conocer el nombre de la flor que es máxima según estos criterios
+-- La cantidad demandada
+-- La cantidad de letras de la flor
+-- El resto de la división de la cantidad demandada por 4
+-- Resolverla evitando tener código duplicado y usando recursividad.
+
+maximoSegun :: Int -> [Flor] -> Int
+maximoSegun 0 [x] = cantidadDeDemanda x 
+maximoSegun 0 (x:xs) = max (cantidadDeDemanda x) (maximoSegun 0 xs) 
+
+maxFlor :: Flor -> Flor -> Flor
+maxFlor a b | cantidadDeDemanda a > cantidadDeDemanda b = a
+maxFlor a b | cantidadDeDemanda a < cantidadDeDemanda b = b
+maxFlor a b | otherwise = a
+
+maximoSegun' :: [Flor] -> Flor
+maximoSegun' [x] = x
+maximoSegun' (x:xs) = maxFlor x (maximoSegun' xs)

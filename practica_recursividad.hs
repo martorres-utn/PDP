@@ -33,3 +33,10 @@ promediosSinAplazos listaNotas = map (promedio.filter (>=6)) listaNotas
 
 promediosSinAplazos' :: [[Int]] -> [[Int]]
 promediosSinAplazos' lista = filter (\elem -> (div (sum elem) (length elem)) > 5 ) lista
+
+-- 3. Definir la función aprobó/1, que dado un alumno devuelve True si el alumno aprobó. Aclaración: se dice que un alumno aprobó si todas sus notas son 6 o más.
+-- Main> aprobo (Alumno “manuel” [8,6,2,4])
+-- False
+
+aprobo :: Persona -> Bool
+aprobo alumno = ((all (>5)). notas) alumno

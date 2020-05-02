@@ -17,6 +17,9 @@ promediosAlumnos :: [Persona] -> [(Nombre, Int)]
 promediosAlumnos [] = []
 promediosAlumnos (x:xs) = [promedioAlumno x] ++ promediosAlumnos xs
 
+promediosAlumnos' :: [Persona] -> [(Nombre, Int)]
+promediosAlumnos' alumnos = map (\e -> (nombre e, (promedio . notas) e)) alumnos
+
 {- 
 2. Definir la función promediosSinAplazos/1, que dada una lista de listas, devuelve la lista de los promedios de cada lista-elemento, excluyendo los que sean menores a 6 que no se cuentan.
 Main> promediosSinAplazos [[8,6],[6,6,4]]
@@ -26,7 +29,7 @@ promedio :: Notas -> Int
 promedio notas = div (sum notas) (length notas)
 
 promediosSinAplazos :: [Notas] -> [Int]
-promediosSinAplazos  = map (promedio.filter (>=6)) 
+promediosSinAplazos listaNotas = map (promedio.filter (>=6)) listaNotas 
 
 promediosSinAplazos' :: [[Int]] -> [[Int]]
 promediosSinAplazos' lista = filter (\elem -> (div (sum elem) (length elem)) > 5 ) lista

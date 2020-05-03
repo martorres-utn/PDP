@@ -77,15 +77,16 @@ flores = [orquidea, rosa, violeta, jazmin]
 -- El resto de la división de la cantidad demandada por 4
 -- Resolverla evitando tener código duplicado y usando recursividad.
 
-maximoSegun :: Int -> [Flor] -> Int
-maximoSegun 0 [x] = cantidadDeDemanda x 
-maximoSegun 0 (x:xs) = max (cantidadDeDemanda x) (maximoSegun 0 xs) 
+maxFlor :: (Flor -> Int) -> Flor -> Flor -> Flor
+maxFlor criterio a b | criterio a > criterio b = a
+maxFlor criterio a b | criterio a < criterio b = b
+maxFlor criterio a b | otherwise = a
 
-maxFlor :: Flor -> Flor -> Flor
-maxFlor a b | cantidadDeDemanda a > cantidadDeDemanda b = a
-maxFlor a b | cantidadDeDemanda a < cantidadDeDemanda b = b
-maxFlor a b | otherwise = a
+maxFlores :: (Flor -> Int) -> [Flor] -> Flor
+maxFlores criterio [x] = x
+maxFlores criterio (x:xs) = maxFlor criterio x (maxFlores criterio xs)
 
-maximoSegun' :: [Flor] -> Flor
-maximoSegun' [x] = x
-maximoSegun' (x:xs) = maxFlor x (maximoSegun' xs)
+maximoSegun :: Int -> [Flor] -> String
+maximoSegun 0 flores = (nombreFlor.maxFlores cantidadDeDemanda) flores
+maximoSegun 1 flores = (nombreFlor.maxFlores (length.nombreFlor)) flores
+maximoSegun 2 flores = (nombreFlor.maxFlores ((rem 4).cantidadDeDemanda)) flores

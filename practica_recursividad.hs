@@ -1,3 +1,5 @@
+import Data.Time.Calendar
+
 {- 1. Definir la función promediosAlumnos/1, que dada una lista de alumnos devuelve una lista de tuplas que tenga el alumno y el promedio (Consideramos la división entera para el promedio y usamos la funcion div).
 type Nombre = String
 type Notas = [Int]
@@ -120,8 +122,8 @@ cantidadConsonantes palabra = (length . (filter (\x -> elem x ['q','w','r','t','
 filtrarMasConsonantesQueVocales :: [String] -> [String]
 filtrarMasConsonantesQueVocales lista = filter (\x -> cantidadConsonantes x > cantidadVocales x) lista
 
-obtenerTuplasDeLista :: [String] -> [(String, (Int, Int))]
-obtenerTuplasDeLista lista = map ( \x -> (x, (cantidadConsonantes x, cantidadVocales x)) ) (filtrarMasConsonantesQueVocales lista)
+f1 :: [String] -> [(String, (Int, Int))]
+f1 lista = map ( \x -> (x, (cantidadConsonantes x, cantidadVocales x)) ) (filtrarMasConsonantesQueVocales lista)
 
 -- 7.b) - Hacer una función que dada una lista de personas, con su nombre, lugar y fecha  de nacimiento, devuelva una lista con los nombres y la edad de quienes son menores de edad (considerar menores de 18 años y calcular todas las edades al 31/12/2020).
 
@@ -129,6 +131,17 @@ obtenerTuplasDeLista lista = map ( \x -> (x, (cantidadConsonantes x, cantidadVoc
 -- Persona “Marta” ”Mendoza” (12,10,2003))]
 
 -- [(“Luis”,15), (“Marta”,17)]
+
+calcularEdad :: (Int, Int, Integer) -> Integer
+calcularEdad (dia, mes, ani) = (div . diffDays (fromGregorian 2020 12 31)) (fromGregorian ani mes dia) 365
+
+data DatosPersona = PersonaLugarFecha {nombrePersona'::String, lugar::String, fechaDeNacimiento::(Int, Int, Integer)} 
+
+f2 :: [DatosPersona] -> [(String, Integer)] 
+f2 listaPersonas = (map (\menorEdad -> (nombrePersona' menorEdad, (calcularEdad.fechaDeNacimiento) menorEdad)).filter (\persona -> (calcularEdad.fechaDeNacimiento) persona < 18)) listaPersonas
+
+-- f2   [(PersonaLugarFecha "Luis" "Cordoba" (20,2,2005)), (PersonaLugarFecha "Pedro" "Rosario" (5,5,1940)), (PersonaLugarFecha "Marta" "Mendoza" (12,10,2003))]
+-- [("Luis",15),("Marta",17)]
 
 -- 7.c) - Hacer una función f3 que sea de orden superior y permita obtener el mismo resultado que f1 y f2, invocandola con los mismos argumentos anteriores y otros más que se consideren necesarios.
 

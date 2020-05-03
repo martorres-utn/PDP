@@ -90,3 +90,56 @@ maximoSegun :: Int -> [Flor] -> String
 maximoSegun 0 flores = (nombreFlor.maxFlores cantidadDeDemanda) flores
 maximoSegun 1 flores = (nombreFlor.maxFlores (length.nombreFlor)) flores
 maximoSegun 2 flores = (nombreFlor.maxFlores ((rem 4).cantidadDeDemanda)) flores
+
+-- 6 b) Dada una lista de flores determinar si están ordenadas de mayor a menor por cantidad de demanda.
+
+ordDesc' :: [Int] -> Bool
+ordDesc' [] = False
+ordDesc' [x] = False
+ordDesc' [x,y] = x > y
+ordDesc' (x:xs) = x > head xs && ordDesc' xs
+
+ordDesc :: [Flor] -> Bool
+ordDesc [] = False
+ordDesc [x] = False
+ordDesc [x,y] = (cantidadDeDemanda x) > (cantidadDeDemanda y)
+ordDesc (x:xs) = (cantidadDeDemanda x) > cantidadDeDemanda(head xs) && ordDesc xs
+
+-- 7.a) - Hacer una función que dada una lista de comidas devuelva una lista con las comidas que tienen más consonantes que vocales, indicando dichas cantidades.
+
+-- f1 [“lechuga”, “anana”, “alfajor de chocolate”]
+
+-- [(“lechuga”,(4,3)),(“alfajor de chocolate”,(10,8))]
+
+cantidadVocales :: String -> Int
+cantidadVocales palabra = (length . (filter (\x -> elem x ['a', 'e', 'i', 'o', 'u'] || elem x ['A', 'E', 'I', 'O', 'U']))) palabra 
+
+cantidadConsonantes :: String -> Int
+cantidadConsonantes palabra = (length . (filter (\x -> elem x ['q','w','r','t','y','p','s','d','f','g','h','j','k','l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'] || elem x ['Q','W','R','T','Y','P','S','D','F','G','H','J','K','L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M']))) palabra
+
+filtrarMasConsonantesQueVocales :: [String] -> [String]
+filtrarMasConsonantesQueVocales lista = filter (\x -> cantidadConsonantes x > cantidadVocales x) lista
+
+obtenerTuplasDeLista :: [String] -> [(String, (Int, Int))]
+obtenerTuplasDeLista lista = map ( \x -> (x, (cantidadConsonantes x, cantidadVocales x)) ) (filtrarMasConsonantesQueVocales lista)
+
+-- 7.b) - Hacer una función que dada una lista de personas, con su nombre, lugar y fecha  de nacimiento, devuelva una lista con los nombres y la edad de quienes son menores de edad (considerar menores de 18 años y calcular todas las edades al 31/12/2020).
+
+-- f2   [Persona “Luis” ”Cordoba” (20,2,2005)), Persona “Pedro” ”Rosario”(5,5,1940)),
+-- Persona “Marta” ”Mendoza” (12,10,2003))]
+
+-- [(“Luis”,15), (“Marta”,17)]
+
+-- 7.c) - Hacer una función f3 que sea de orden superior y permita obtener el mismo resultado que f1 y f2, invocandola con los mismos argumentos anteriores y otros más que se consideren necesarios.
+
+-- f3 [“lechuga”, “anana”, “alfajor de chocolate”] <argumento/s>
+
+-- [(“lechuga”,(4,3)),(“alfajor de chocolate”,(10,8)]
+
+-- f3   [Persona “Luis” ”Cordoba” (20,2,2005)), Persona “Pedro” ”Rosario”(5,5,1940)),
+-- Persona “Marta” ”Mendoza” (12,10,2003))] <argumento/s>
+
+-- [(“Luis”,15), (“Marta”,17)]
+
+-- Nota: los otros argumentos no pueden ser f1 ni f2.
+

@@ -102,3 +102,26 @@ reduceFatFast' potencia raton = medicamento (replicate potencia alcachofa ++ [hi
 
 -- d. Hacer la función hierbaMilagrosa, que es un medicamento que usa hierbasVerdes
 -- para curar todas las enfermedades infecciosas.
+
+hierbaMilagrosa :: Animal -> Animal
+hierbaMilagrosa raton = medicamento ( map (\enf -> (hierbaVerde enf) ) enfermedadesInfecciosas ) raton 
+
+-- 4. Experimentos:
+-- Los laboratorios antes de publicar un medicamento, lo prueban con distintos ratones para
+-- evaluar los resultados:
+
+-- a. Hacer la función que encuentra la cantidadIdeal. Recibe una condición y dice cuál es
+-- el primer número natural que la cumple.
+--      > cantidadIdeal even                             > cantidadIdeal (>5)
+--      2                                                6
+cantidadIdeal :: (Int -> Bool) -> Int
+cantidadIdeal condicion = (head.(take 1).(filter condicion)) [1..]
+
+-- b. Hacer la función estanMejoresQueNunca que dado un conjunto de ratones y un
+-- medicamento, es cierto cuando cada uno pesa menos de 1 kg después de aplicarle el
+-- medicamento dado.
+estanMejoresQueNunca :: [Animal] -> (Animal -> Animal) -> Bool
+estanMejoresQueNunca ratones medicamento = all (\raton -> (peso.medicamento) raton < 1) ratones
+
+-- c. Diseñar el siguiente experimento: dado un conjunto de ratones, encontrar la potencia
+-- ideal del reduceFatFast necesaria para que todos estén mejores que nunca.

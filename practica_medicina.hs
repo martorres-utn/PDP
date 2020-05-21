@@ -125,3 +125,6 @@ estanMejoresQueNunca ratones medicamento = all (\raton -> (peso.medicamento) rat
 
 -- c. Diseñar el siguiente experimento: dado un conjunto de ratones, encontrar la potencia
 -- ideal del reduceFatFast necesaria para que todos estén mejores que nunca.
+
+experimento :: [Animal] -> Int
+experimento ratones = cantidadIdeal (\potencia -> estanMejoresQueNunca ratones (reduceFatFast potencia))

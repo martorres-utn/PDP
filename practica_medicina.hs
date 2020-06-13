@@ -7,7 +7,7 @@
 data Animal = Raton {nombre :: String, edad :: Float, peso :: Float, enfermedades :: [String]} deriving Show
 
 -- Ejemplo de raton
-cerebro = Raton "Cerebro" 9.0 0.2 ["brucelosis", "sarampión", "tuberculosis"]
+cerebro = Raton "Cerebro" 9.0 2000.5 ["brucelosis", "sarampión", "tuberculosis"]
 -- Estos son las enfermedades infecciosas
 enfermedadesInfecciosas = [ "brucelosis", "tuberculosis"]
 
@@ -106,6 +106,9 @@ reduceFatFast' potencia raton = medicamento (replicate potencia alcachofa ++ [hi
 hierbaMilagrosa :: Animal -> Animal
 hierbaMilagrosa raton = medicamento ( map (\enf -> (hierbaVerde enf) ) enfermedadesInfecciosas ) raton 
 
+hierbaMilagrosa' :: Animal -> Animal
+hierbaMilagrosa' raton = medicamento ( map hierbaVerde enfermedadesInfecciosas ) raton 
+
 -- 4. Experimentos:
 -- Los laboratorios antes de publicar un medicamento, lo prueban con distintos ratones para
 -- evaluar los resultados:
@@ -117,14 +120,23 @@ hierbaMilagrosa raton = medicamento ( map (\enf -> (hierbaVerde enf) ) enfermeda
 cantidadIdeal :: (Int -> Bool) -> Int
 cantidadIdeal condicion = (head.(take 1).(filter condicion)) [1..]
 
+cantidadIdeal' :: (Int -> Bool) -> Int
+cantidadIdeal' condicion = (head.(filter condicion)) [1..]
+
 -- b. Hacer la función estanMejoresQueNunca que dado un conjunto de ratones y un
 -- medicamento, es cierto cuando cada uno pesa menos de 1 kg después de aplicarle el
 -- medicamento dado.
 estanMejoresQueNunca :: [Animal] -> (Animal -> Animal) -> Bool
 estanMejoresQueNunca ratones medicamento = all (\raton -> (peso.medicamento) raton < 1) ratones
 
+estanMejoresQueNunca' :: [Animal] -> (Animal -> Animal) -> Bool
+estanMejoresQueNunca' ratones medicamento = all ((< 1).peso.medicamento) ratones
+
 -- c. Diseñar el siguiente experimento: dado un conjunto de ratones, encontrar la potencia
 -- ideal del reduceFatFast necesaria para que todos estén mejores que nunca.
 
 experimento :: [Animal] -> Int
 experimento ratones = cantidadIdeal (\potencia -> estanMejoresQueNunca ratones (reduceFatFast potencia))
+
+experimento' :: [Animal] -> Int
+experimento' ratones = cantidadIdeal ((estanMejoresQueNunca ratones).reduceFatFast)

@@ -68,3 +68,61 @@ cadenaDeAmistades([UnMago, OtroMago | _]) :-
     posibleCasa(MismaCasa, UnMago), 
     posibleCasa(MismaCasa, OtroMago),
     cadenaDeAmistades([OtroMago | _]).
+
+
+%Parte 2
+esDe(hermione, gryffindor).
+esDe(ron, gryffindor).
+esDe(harry, gryffindor).
+esDe(draco, slytherin).
+esDe(luna, ravenclaw).
+
+%malas acciones
+
+accion(andarFueraDeCama, -50).
+accion(visitar(bosque), -50).
+accion(visitar(seccionRestringidaBiblioteca), -10).
+accion(visitar(tercerPiso), -75).
+
+%buenas acciones
+accion(ganarPartidaAjedrezMagico, 50).
+accion(salvarAmigosConIntelecto, 50).
+accion(derrotarVoldemort, 60).
+
+%acciones de alumnos
+alumnoAccion(harry, andarFueraDeCama).
+alumnoAccion(hermione, visitar(tercerPiso)).
+alumnoAccion(hermione, visitar(seccionRestringidaBiblioteca)).
+alumnoAccion(harry, visitar(tercerPiso)).
+alumnoAccion(harry, visitar(bosque)).
+alumnoAccion(draco, visitar(mazmorras)).
+alumnoAccion(ron, ganarPartidaAjedrezMagico).
+alumnoAccion(hermione, salvarAmigosConIntelecto).
+alumnoAccion(harry, derrotarVoldemort).
+
+/*
+1.a. Saber si un mago es buen alumno, que se cumple si hizo alguna acción y ninguna de las cosas que hizo se considera una mala acción (que son aquellas que provocan un puntaje negativo).
+1.b. Saber si una acción es recurrente, que se cumple si más de un mago hizo esa misma acción.
+*/
+
+esBuenAlumno(Mago) :-
+    alumnoAccion(Mago, _),
+    forall((alumnoAccion(Mago, CualquierAccion), accion(CualquierAccion, Puntaje)), Puntaje >= 0).
+
+accionEsRecurrente(Accion) :-
+    alumnoAccion(UnMago, Accion),
+    alumnoAccion(OtroMago, Accion),
+    UnMago \= OtroMago.
+
+/*
+2. Saber cuál es el puntaje total de una casa, que es la suma de los puntos obtenidos por sus miembros.
+*/
+
+casaPuntaje(Casa, Puntaje) :-
+    findall(Puntaje, (esDe(Miembro, Casa), alumnoAccion(Miembro, Accion), accion(Accion, Puntaje)), PuntajesCasa),
+    sum_list(PuntajesCasa, Puntaje).
+
+
+/*
+3. Saber cuál es la casa ganadora de la copa, que se verifica para aquella casa que haya obtenido una cantidad mayor de puntos que todas las otras.
+*/

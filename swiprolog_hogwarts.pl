@@ -77,6 +77,9 @@ esDe(harry, gryffindor).
 esDe(draco, slytherin).
 esDe(luna, ravenclaw).
 
+preguntaEnClase(dondeBezoar, 20, snape).
+preguntaEnClase(comoLevitarPluma, 25, flitwick).
+
 %malas acciones
 
 accion(andarFueraDeCama, -50).
@@ -89,6 +92,9 @@ accion(ganarPartidaAjedrezMagico, 50).
 accion(salvarAmigosConIntelecto, 50).
 accion(derrotarVoldemort, 60).
 
+accion(Pregunta, Puntaje) :- preguntaEnClase(Pregunta, Puntaje, Profesor), Profesor \= snape.
+accion(Pregunta, Puntaje) :- preguntaEnClase(Pregunta, Dificultad, Profesor), Profesor = snape, Puntaje is Dificultad / 2.
+
 %acciones de alumnos
 alumnoAccion(harry, andarFueraDeCama).
 alumnoAccion(hermione, visitar(tercerPiso)).
@@ -99,6 +105,8 @@ alumnoAccion(draco, visitar(mazmorras)).
 alumnoAccion(ron, ganarPartidaAjedrezMagico).
 alumnoAccion(hermione, salvarAmigosConIntelecto).
 alumnoAccion(harry, derrotarVoldemort).
+alumnoAccion(hermione, dondeBezoar).
+alumnoAccion(hermione, comoLevitarPluma).
 
 /*
 1.a. Saber si un mago es buen alumno, que se cumple si hizo alguna acción y ninguna de las cosas que hizo se considera una mala acción (que son aquellas que provocan un puntaje negativo).
@@ -134,3 +142,11 @@ casaGanadora(Casa) :-
     casa(Casa),
     casaPuntaje(Casa, PuntajeGanador),
     forall((casa(OtraCasa), casaPuntaje(OtraCasa, Puntaje)), Puntaje =< PuntajeGanador).
+
+/*
+4. Queremos agregar la posibilidad de ganar puntos por responder preguntas en clase. La información que nos interesa de las respuestas en clase son: cuál fue la pregunta, cuál es la dificultad de la pregunta y qué profesor la hizo.
+Por ejemplo, sabemos que Hermione respondió a la pregunta de dónde se encuentra un Bezoar, de dificultad 20, realizada por el profesor Snape, y cómo hacer levitar una pluma, de dificultad 25, realizada por el profesor Flitwick.
+
+Modificar lo que sea necesario para que este agregado funcione con lo desarrollado hasta ahora, teniendo en cuenta que los puntos que se otorgan equivalen a la dificultad de la pregunta, a menos que la haya hecho Snape, que da la mitad de puntos en relación a la dificultad de la pregunta.
+
+*/

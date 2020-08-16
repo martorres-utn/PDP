@@ -3,6 +3,7 @@
 ingresante(harry, sangreMestiza, [corajudx, amistosx, orgullosx, inteligente], slytherin).
 ingresante(draco, sangrePura, [orgullosx, inteligente], hufflepuff).
 ingresante(hermione, sangreImpura, [inteligente, orgullosx, responsable]).
+ingresante(pepita, sangreImpura, [inteligente, orgullosx, responsable, amistosx]).
 
 casaPrioridad(gryffindor, [corajudx]).
 casaPrioridad(slytherin, [orgullosx, inteligente]).
@@ -56,10 +57,14 @@ posibleCasa(gryffindor, hermione).
 esAmistoso(Mago) :- ingresante(Mago, _, Caracter, _), member(amistosx, Caracter).
 esAmistoso(Mago) :- ingresante(Mago, _, Caracter), member(amistosx, Caracter).
 
-cadenaDeAmistades([]).
-cadenaDeAmistades([Mago0, Mago1 | Cola]) :- 
-    esAmistoso(Mago0), 
-    esAmistoso(Mago1), 
-    posibleCasa(Mago0, MismaCasa), 
-    posibleCasa(Mago1, MismaCasa), 
-    cadenaDeAmistades([Mago1 | Cola]).
+cadenaDeAmistades([UnMago, OtroMago]) :- 
+    esAmistoso(UnMago), 
+    esAmistoso(OtroMago), 
+    posibleCasa(MismaCasa, UnMago), 
+    posibleCasa(MismaCasa, OtroMago).
+cadenaDeAmistades([UnMago, OtroMago | _]) :- 
+    esAmistoso(UnMago), 
+    esAmistoso(OtroMago), 
+    posibleCasa(MismaCasa, UnMago), 
+    posibleCasa(MismaCasa, OtroMago),
+    cadenaDeAmistades([OtroMago | _]).

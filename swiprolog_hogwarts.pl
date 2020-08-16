@@ -126,3 +126,11 @@ casaPuntaje(Casa, Puntaje) :-
 /*
 3. Saber cuál es la casa ganadora de la copa, que se verifica para aquella casa que haya obtenido una cantidad mayor de puntos que todas las otras.
 */
+
+casa(Casa) :-
+    esDe(_, Casa).
+
+casaGanadora(Casa) :-
+    casa(Casa),
+    casaPuntaje(Casa, PuntajeGanador),
+    forall((casa(OtraCasa), casaPuntaje(OtraCasa, Puntaje)), Puntaje =< PuntajeGanador).

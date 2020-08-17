@@ -26,3 +26,24 @@ puedeRealizarTarea(Persona, Tarea) :-
 puedeRealizarTarea(Persona, Tarea) :-
     herramientasRequeridas(Tarea, HerramientasRequeridas),
     forall(member(Herramienta, HerramientasRequeridas), satisfaceHerramienta(Persona, Herramienta)).
+
+%4
+tareaPedida(juan, ordenarCuarto, 25).
+tareaPedida(juan, encerarPisos, 25).
+tareaPedida(ana, cortarPasto, 100).
+tareaPedida(ana, limpiarTecho, 15).
+
+precio(ordenarCuarto, 2).
+precio(limpiarTecho, 3).
+precio(cortarPasto, 4).
+precio(limpiarBanio, 5).
+precio(encerarPisos, 6).
+
+facturaCliente(Cliente, Total) :-
+    tareaPedida(Cliente, _, _),
+    findall(TotalTarea, ( tareaPedida(Cliente, Tarea, MetrosCuadrados), costoPorMetro(Tarea, MetrosCuadrados, TotalTarea) ), TotalesPorTarea),
+    sum_list(TotalesPorTarea, Total).
+
+costoPorMetro(Tarea, MetrosCuadrados, CostoTotal) :-
+    precio(Tarea, PrecioPorMetro),
+    CostoTotal is MetrosCuadrados * PrecioPorMetro.

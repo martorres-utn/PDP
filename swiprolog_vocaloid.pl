@@ -49,3 +49,33 @@ cumpleRequisitos(Cantante, mediano(MaximaDuracionTotal)) :-
 cumpleRequisitos(Cantante, pequeño(MinimaDuracionDeUnaCancion)) :-
     sabeCantar(Cantante, cancion(_, Duracion)),
     Duracion > MinimaDuracionDeUnaCancion.
+
+totalFamaConcierto(Cantante, TotalFama) :-
+    cantante(Cantante),
+    findall(FamaConcierto, (puedeParticipar(Cantante, Concierto), concierto(Concierto, _, FamaConcierto, _)), NivelesDeFamaConcierto),
+    sum_list(NivelesDeFamaConcierto, TotalFama).
+
+nivelDeFama(Cantante, Nivel) :-
+    totalFamaConcierto(Cantante, TotalFamaConcierto),
+    totalCanciones(Cantante, CantidadCanciones, _),
+    Nivel is TotalFamaConcierto * CantidadCanciones.
+
+cantanteMasFamoso(Cantante) :-
+    cantante(Cantante),
+    nivelDeFama(Cantante, NivelMasAlto),
+    forall(nivelDeFama(_, CualquierNivel), CualquierNivel =< NivelMasAlto).
+
+seConocen(megurineLuka, hatsuneMiku).
+seConocen(megurineLuka, gumi).
+seConocen(gumi, seeU).
+seConocen(seeU, kaito).
+
+conocidoCercano(Cantante, OtroCantante) :- seConocen(Cantante, OtroCantante). 
+conocidoCercano(Cantante, OtroCantante) :- seConocen(OtroCantante, Cantante).
+
+conocido(Cantante, OtroCantante) :- conocidoCercano(Cantante, OtroCantante).
+conocido(Cantante, OtroCantante) :- conocidoCercano(OtroCantante, Tercero), conocido(Cantante, Tercero).
+
+unicoParticipante(Cantante, Concierto) :-
+    puedeParticipar(Cantante, Concierto),
+    not((conocido(Cantante, OtroCantante), puedeParticipar(OtroCantante, Concierto))).

@@ -18,3 +18,6 @@ esNovedoso(Cantante) :-
     sum_list(Duraciones, Total),
     Total < 15.
     
+cantanteAcelerado(Cantante) :-
+    cantante(Cantante),
+    not( (sabeCantar(Cantante, cancion(_, Duracion)), Duracion > 4) ).
